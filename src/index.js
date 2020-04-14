@@ -1,9 +1,24 @@
-var http = require("http");
+const express = require("express");
+const bodyParser = require("body-parser");
+const postsRouter = require("./routers/postsRouter");
+const authorRouter = require("./routers/authorRouter");
+const adminRouter = require("./routers/adminRouter");
 
-//create a server object:
-http
-  .createServer(function(req, res) {
-    res.write("Hello World!"); //write a response to the client
-    res.end(); //end the response
-  })
-  .listen(8080); //the server object listens on port 8080
+const app = express();
+
+app.set("trust proxy", 1); // trust first proxy
+app.use(bodyParser.json());
+
+
+app.get("/", (req, res) => {
+  res.send("Blog Backend running!");
+});
+
+app.use("/posts", postsRouter);
+app.use("/authors", authorRouter);
+app.use("/admin", adminRouter);
+
+
+const server = app.listen(8080, () => {
+  console.log("Server running on port: " + server.address().port);
+});
