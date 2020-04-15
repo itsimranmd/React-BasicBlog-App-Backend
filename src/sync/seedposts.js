@@ -3,10 +3,10 @@ const faker = require("faker");
 const Author = require("../models/author");
 const Post = require("../models/post");
 
-const seedPost = () => {
+const seedPosts = () => {
   const blogData = [
     {
-      author: "Jason",
+      author: "Dani",
       posts: [
         {
           title: faker.lorem.word(),
@@ -23,7 +23,7 @@ const seedPost = () => {
       ]
     },
     {
-      author: "Imran",
+      author: "John",
       posts: [
         {
           title: faker.lorem.word(),
@@ -40,7 +40,7 @@ const seedPost = () => {
       ]
     },
     {
-      author: "Mike",
+      author: "Sam",
       posts: [
         {
           title: faker.lorem.word(),
@@ -57,7 +57,6 @@ const seedPost = () => {
       ]
     }
   ];
-  console.log(blogData);
 
   blogData.forEach(item => {
     const author = new Author({
@@ -67,13 +66,13 @@ const seedPost = () => {
     author
       .save()
       .then(response => {
-        const authorID = response._id;
-        if (authorID) {
+        const authorId = response._id;
+        if (authorId) {
           item.posts.forEach(post => {
             const newPost = new Post({
               title: post.title,
               content: post.content,
-              author: authorID
+              author: authorId
             });
             newPost
               .save()
@@ -82,7 +81,7 @@ const seedPost = () => {
           });
         }
       })
-      .catch(console.lg);
+      .catch(console.error);
   });
 };
 
@@ -96,7 +95,6 @@ const clearDB = () => {
     .catch(console.error);
 };
 
-// clearDB();
-seedPost();
+seedPosts();
 
-module.exports = seedPost;
+module.exports = seedPosts;
